@@ -1,7 +1,7 @@
 import os
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyAOtlGVVIUl0sk9vPNNU_69-1jT4EQb4kA")
+genai.configure(api_key=os.environ['GEMINI_APP_KEY'])
 
 
 # Create the model
@@ -20,9 +20,17 @@ model = genai.GenerativeModel(
 
 chat_session = model.start_chat(
   history=[
+
   ]
 )
+while True:
+    user_input = input("You: ")
+    if user_input.lower() in ["exit", "quit", "bye"]:
+        print("Chatbot: Goodbye!")
+        break
 
-response = chat_session.send_message(input("You: "))
+    # Send the user's message to the chatbot
+    response = chat_session.send_message(user_input)
 
-print(response.text)
+    # Print the chatbot's response
+    print(f"Chatbot: {response.text}")
