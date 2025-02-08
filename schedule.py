@@ -47,11 +47,11 @@ def main():
             "description": "Some more details on this awesome event",
             "colorId": 6,
             "start": {
-                "dateTime": "2025-03-01T09:00:00-05:00",
+                "dateTime": "2025-03-10T09:00:00-05:00",
                 "timeZone": "America/New_York"
             },
             "end": {
-                "dateTime": "2025-03-01T16:00:00-05:00",
+                "dateTime": "2025-03-10T16:00:00-05:00",
                 "timeZone": "America/New_York"
             },
             "recurrence" : [
@@ -71,6 +71,23 @@ def main():
     except HttpError as error:
         # Handle any HTTP errors
         print(f"An HTTP error occurred: {error}")
-        
+
+
+def create_event(event_data):
+    # Existing auth code
+    creds = None
+    if os.path.exists("token.json"):
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+    
+    # ... (rest of existing auth code)
+    
+    try:
+        service = build("calendar", "v3", credentials=creds)
+        event = service.events().insert(calendarId="primary", body=event_data).execute()
+        print(f"Successfully created event: {event.get('htmlLink')}")
+        return True
+    except HttpError as error:
+        print(f"Error creating event: {error}")
+        return False        
 if __name__ =="__main__":
     main()
