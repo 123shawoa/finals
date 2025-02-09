@@ -33,7 +33,7 @@ class EventPlanner:
         self.required_fields = {
             "summary": "What's the title of your event?",
             "start.dateTime": "When does it start? (e.g., 'tomorrow 2 PM' or '2025-03-15 14:30')",
-            "end.dateTime": "When does it end? (e.g., 'in 2 hours' or '2025-03-15 16:30')"
+            "end.dateTime": "When does it end? (e.g., '2 hours after it starts' or '2025-03-15 16:30')"
         }
 
     def parse_datetime(self, time_str, reference_time = None):
