@@ -36,11 +36,14 @@ class EventPlanner:
             "end.dateTime": "When does it end? (e.g., 'in 2 hours' or '2025-03-15 16:30')"
         }
 
-    def parse_datetime(self, time_str):
+    def parse_datetime(self, time_str, reference_time = None):
         """Convert natural language time to ISO format using Gemini"""
         prompt = f'''Convert this time reference to ISO 8601 format in America/New_York timezone: "{time_str}". 
         Current time is {datetime.now().strftime("%Y-%m-%d %H:%M")}. 
-        Respond ONLY with the ISO timestamp.'''
+        '''
+        if reference_time:
+            prompt += f" The end time must be after {reference_time} and if not then use your judgement for it"
+        prompt += " Respond ONLY with the ISO timestamp."
         response = model.generate_content(prompt)
         return response.text.strip()
 
@@ -61,13 +64,30 @@ class EventPlanner:
 
                 # Extract core field using AI
                 if field.startswith('start.') or field.startswith('end.'):
+                    key = field.split('.')[0]
+                    reference_time = None
+                    if key == 'end':
+                        reference_time = self.event_template.get('start', {}).get("dateTime")
                     try:
-                        iso_time = self.parse_datetime(user_input)
-                        key = field.split('.')[0]
+                        iso_time = self.parse_datetime(user_input, reference_time=reference_time)
+                
+                        # New validation check for end time
+                        if key == 'end':
+                            # Get already set start time
+                            start_iso = self.event_template['start']['dateTime']
+                    
+                        # Convert to datetime objects for comparison
+                            start_dt = datetime.fromisoformat(start_iso)
+                            end_dt = datetime.fromisoformat(iso_time)
+                    
+                            if end_dt <= start_dt:
+                                print("Chatbot: ❌ The end time must be AFTER the start time. Please try again!")
+                                continue  # Restart the loop to re-prompt
+
                         self.event_template[key]["dateTime"] = iso_time
                         break
-                    except:
-                        print("Chatbot: Hmm, I didn't quite get that time. Let's try again!")
+                    except Exception as e:
+                        print(f"Chatbot: ⏳ Hmm, I didn't quite get that time. Let's try again! ({str(e)})")
                 else:
                     # Use AI to extract relevant info from free-form input
                     extraction_prompt = f'''Extract the {field.replace('_', ' ')} from this message: "{user_input}". 
