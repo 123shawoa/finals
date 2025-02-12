@@ -80,6 +80,17 @@ def create_event(event_data):
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
     
     # ... (rest of existing auth code)
+    if not creds or not creds.valid:
+        # If credentials are expired, refresh them
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            # If no credentials or refresh token, authenticate using client secrets file
+            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+            creds = flow.run_local_server(port=0)
+        
+        with open("token.json", "w") as token:
+            token.write(creds.to_json())
     
     try:
         service = build("calendar", "v3", credentials=creds)
