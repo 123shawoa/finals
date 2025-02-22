@@ -96,7 +96,7 @@ def create_event(event_data):
         service = build("calendar", "v3", credentials=creds)
         event = service.events().insert(calendarId="primary", body=event_data).execute()
         print(f"Successfully created event: {event.get('htmlLink')}")
-        return True
+        return (f"Successfully created event: {event.get('htmlLink')}")
     except HttpError as error:
         print(f"Error creating event: {error}")
         return False        

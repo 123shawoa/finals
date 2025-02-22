@@ -27,11 +27,12 @@ def chat():
             
             if success:
                 # Reset the planner for the next event
+                response = success
                 planner.reset()
-                response = "Event created successfully!"
+                
             else:
                 response = "Failed to create the event. Please try again."
     return jsonify({"response": response})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

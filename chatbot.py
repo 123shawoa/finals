@@ -33,7 +33,8 @@ class EventPlanner:
         self.required_fields = {
             "summary": "What's the title of your event?",
             "start.dateTime": "When does it start? (e.g., 'tomorrow 2 PM' or '2025-03-15 14:30')",
-            "end.dateTime": "When does it end? (e.g., '2 hours after it starts' or '2025-03-15 16:30')"
+            "end.dateTime": "When does it end? (e.g., '2 hours after it starts' or '2025-03-15 16:30')",
+            "location": "Where is it happening? (e.g., 'Central Park, New York' or 'Online')"  # Add location as a required field
         }
         self.current_field = None
         self.current_question = None
@@ -72,7 +73,7 @@ class EventPlanner:
                 self.current_field = next(self.fields_iterator, None)
                 if self.current_field is None:
                     # All required fields are filled, proceed to optional fields
-                    return "Great! Do you want to add any optional details like location, description, or attendees? (Type 'no' to skip)"
+                    return "Great! Do you want to add any optional details like description, or attendees? (Type 'no' to skip)"
                 self.current_question = self.required_fields[self.current_field]
                 return self.current_question
             except Exception as e:
@@ -88,7 +89,7 @@ class EventPlanner:
                 self.current_field = next(self.fields_iterator, None)
                 if self.current_field is None:
                     # All required fields are filled, proceed to optional fields
-                    return "Great! Do you want to add any optional details like location, description, or attendees? (Type 'no' to skip)"
+                    return "Great! Do you want to add any optional details like description, or attendees? (Type 'no' to skip)"
                 self.current_question = self.required_fields[self.current_field]
                 return self.current_question
             else:
@@ -115,7 +116,7 @@ class EventPlanner:
         Current time is {datetime.now().strftime("%Y-%m-%d %H:%M")}. 
         '''
         if reference_time:
-            prompt += f" The end time must be after {reference_time} and if not then use your judgement for it"
+            prompt += f" The start time is {reference_time} meaning your answer must be after the start time and for 2 hours after it starts just add two hours to the start time"
         prompt += " Respond ONLY with the ISO timestamp."
         response = model.generate_content(prompt)
         return response.text.strip()
