@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from chatbot import EventPlanner
+from schedule import create_event
 
 app = Flask(__name__)
 planner = EventPlanner()
@@ -7,6 +8,15 @@ planner = EventPlanner()
 @app.route('/')
 def index():
     return render_template('index.html')
+@app.route('/index.html')
+def index1():
+    return render_template('index.html')
+
+
+@app.route('/schedule.html', methods = ['GET'])
+def schedule():
+    planner.reset()
+    return render_template('schedule.html')
 
 @app.route('/get', methods=['POST'])
 def chat():
@@ -22,7 +32,6 @@ def chat():
             print(event_data)
             
             # Call the create_event function from schedule.py
-            from schedule import create_event
             success = create_event(event_data)
             
             if success:
@@ -35,4 +44,4 @@ def chat():
     return jsonify({"response": response})
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

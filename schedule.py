@@ -76,7 +76,7 @@ def main():
 def create_event(event_data):
     # Existing auth code
     creds = None
-    if os.path.exists("token.json"):
+    if os.path.exists("tokens.json"):
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
     
     # ... (rest of existing auth code)

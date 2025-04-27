@@ -1,147 +1,278 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .chat-container {
-            width: 400px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .chat-header {
-            background-color: #0078d7;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            font-size: 18px;
-        }
-        .chat-box {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-        }
-        .chat-box .message {
-            margin-bottom: 10px;
-            max-width: 80%;
-            padding: 10px;
-            border-radius: 10px;
-            position: relative;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        .chat-box .message.user {
-            align-self: flex-end;
-            background-color: #0078d7;
-            color: #fff;
-        }
-        .chat-box .message.bot {
-            align-self: flex-start;
-            background-color: #f1f1f1;
-            color: #333;
-        }
-        .chat-input {
-            display: flex;
-            border-top: 1px solid #ddd;
-        }
-        .chat-input input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            outline: none;
-        }
-        .chat-input button {
-            padding: 10px;
-            background-color: #0078d7;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="chat-container">
-        <div class="chat-header">
-            Event Planner Chatbot
-        </div>
-        <div class="chat-box" id="chat-box">
-            <!-- Chat messages will appear here -->
-        </div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Type your message here...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
-    </div>
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Generic - Spectral by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/css/main.css" />
+		<noscript><link rel="stylesheet" href="static/css/noscript.css" /></noscript>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				background-color: #f4f4f4;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				margin: 0;
+			}
+			.text{
+				font-size: 12px;
+				color: #000;
+				align-items: center;
+			}
+			.chat-container {
+				width: 400px;
+				background-color: #fff;
+				border-radius: 8px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				overflow: hidden;
+				display: flex;
+				flex-direction: column;
+			}
+			.chat-header {
+				background-color: #0078d7;
+				color: #fff;
+				padding: 10px;
+				text-align: center;
+				font-size: 18px;
+			}
+			.chat-box {
+				flex: 1;
+				padding: 10px;
+				overflow-y: auto;
+				border-bottom: 1px solid #ddd;
+				display: flex;
+				flex-direction: column;
+			}
+			.chat-box .message {
+				margin-bottom: 10px;
+				max-width: 80%;
+				padding: 10px;
+				border-radius: 10px;
+				position: relative;
+				animation: fadeIn 0.3s ease-in-out;
+			}
+			.chat-box .message.user {
+				align-self: flex-end;
+				background-color: #0078d7;
+				color: #fff;
+			}
+			.chat-box .message.bot {
+				align-self: flex-start;
+				background-color: #f1f1f1;
+				color: #333;
+			}
+			.chat-input {
+				display: flex;
+				border-top: 1px solid #ddd;
+			}
+			.chat-input input {
+				flex: 1;
+				padding: 10px;
+				border: none;
+				outline: none;
+			}
+			.chat-input button {
+				padding: 10px;
+				background-color: #0078d7;
+				color: #fff;
+				border: none;
+				cursor: pointer;
+			}
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+					transform: translateY(10px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+			/* Update these styles in your existing CSS */
+.chat-container {
+    width: 400px;
+    max-height: 70vh; /* Limit height to 70% of viewport */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Changed from default to work with template */
+    margin: 0 auto; /* Center in the wrapper */
+}
 
-    <script>
-        function sendMessage() {
-            const userInput = document.getElementById('user-input');
-            const chatBox = document.getElementById('chat-box');
+.chat-box {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(70vh - 120px); /* Account for header and input */
+}
 
-            if (userInput.value.trim() === "") return;
+/* Add smooth scrolling */
+.chat-box {
+    scroll-behavior: smooth;
+}
 
-            // Display user message
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('message', 'user');
-            userMessage.textContent = userInput.value;
-            chatBox.appendChild(userMessage);
+/* Custom scrollbar */
+.chat-box::-webkit-scrollbar {
+    width: 6px;
+}
 
-            // Send message to server
-            fetch('/get', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `msg=${encodeURIComponent(userInput.value)}`,
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display bot response
-                const botMessage = document.createElement('div');
-                botMessage.classList.add('message', 'bot');
-                botMessage.textContent = data.response;
-                chatBox.appendChild(botMessage);
+.chat-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
 
-                // Scroll to bottom
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
+.chat-box::-webkit-scrollbar-thumb {
+    background: #0078d7;
+    border-radius: 3px;
+}
 
-            // Clear input
-            userInput.value = '';
-        }
+.chat-box::-webkit-scrollbar-thumb:hover {
+    background: #005fa3;
+}
+		</style>
+	</head>
+	<body class="is-preload">
 
-        // Allow sending message with Enter key
-        document.getElementById('user-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-    </script>
-</body>
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="index.html">Spectral</a></h1>
+						<nav id="nav">
+							<ul>
+								<li class="special">
+									<a href="#menu" class="menuToggle"><span>Menu</span></a>
+									<div id="menu">
+										<ul>
+											<li><a href="index.html">Home</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<article id="main">
+						<section class="wrapper style5">
+							<div class="chat-container">
+								<div class="chat-header">
+									Event Planner Chatbot
+									<p class = "text" > Hey to begin and cancel to stop</p>
+								</div>
+								<div class="chat-box" id="chat-box">
+									<!-- Chat messages will appear here -->
+								</div>
+								<div class="chat-input">
+									<input type="text" id="user-input" placeholder="Type your message here...">
+									<button onclick="sendMessage()">Send</button>
+								</div>
+							</div>
+						</section>
+					</article>
+
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="static/js/jquery.min.js"></script>
+			<script src="static/js/jquery.scrollex.min.js"></script>
+			<script src="static/js/jquery.scrolly.min.js"></script>
+			<script src="static/js/browser.min.js"></script>
+			<script src="static/js/breakpoints.min.js"></script>
+			<script src="static/js/util.js"></script>
+			<script src="static/js/main.js"></script>
+			<script>
+				// Function to detect URLs and convert them to clickable links
+				function linkify(text) {
+					const urlRegex = /(https?:\/\/[^\s]+)/g;
+					return text.replace(urlRegex, function(url) {
+						return '<a href="' + url + '" target="_blank" style="color: #0078d7; text-decoration: underline;">' + url + '</a>';
+					});
+				}
+			
+				// Scroll to bottom function
+				function scrollToBottom() {
+					const chatBox = document.getElementById('chat-box');
+					setTimeout(() => {
+						chatBox.scrollTo({
+							top: chatBox.scrollHeight,
+							behavior: 'smooth'
+						});
+					}, 50);
+				}
+			
+				function sendMessage() {
+					const userInput = document.getElementById('user-input');
+					const chatBox = document.getElementById('chat-box');
+			
+					if (userInput.value.trim() === "") return;
+			
+					// Display user message
+					const userMessage = document.createElement('div');
+					userMessage.classList.add('message', 'user');
+					userMessage.textContent = userInput.value;
+					chatBox.appendChild(userMessage);
+					
+					scrollToBottom();
+			
+					// Send message to server
+					fetch('/get', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+						},
+						body: `msg=${encodeURIComponent(userInput.value)}`,
+					})
+					.then(response => response.json())
+					.then(data => {
+						// Display bot response with linkified content
+						const botMessage = document.createElement('div');
+						botMessage.classList.add('message', 'bot');
+						
+						// Use innerHTML instead of textContent to render links
+						botMessage.innerHTML = linkify(data.response);
+						
+						chatBox.appendChild(botMessage);
+						scrollToBottom();
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						const errorMessage = document.createElement('div');
+						errorMessage.classList.add('message', 'bot');
+						errorMessage.textContent = "Sorry, I encountered an error. Please try again.";
+						chatBox.appendChild(errorMessage);
+						scrollToBottom();
+					});
+			
+					userInput.value = '';
+				}
+			
+				// Allow sending message with Enter key
+				document.getElementById('user-input').addEventListener('keypress', function (e) {
+					if (e.key === 'Enter') {
+						sendMessage();
+					}
+				});
+			
+				document.addEventListener('DOMContentLoaded', function() {
+					scrollToBottom();
+				});
+			</script>
+
+	</body>
 </html>
