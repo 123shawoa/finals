@@ -58,11 +58,9 @@
 								<p>PYTHON ,HTML, GEMINI API, FLASK, JAVASCRIPT.<br />
 								Google datetime, generative ai, task planners e.t.c</p>
 							</header>
-							<ul class="icons major">
-								<li><span class="icon fa-gem major style1"><span class="label">Lorem</span></span></li>
-								<li><span class="icon fa-heart major style2"><span class="label">Ipsum</span></span></li>
-								<li><span class="icon solid fa-code major style3"><span class="label">Dolor</span></span></li>
-							</ul>
+							<div class="event-counter">
+								Total Events Created: <span id="eventCount">{{ event_count }}</span>
+							</div>
 						</div>
 					</section>
 
@@ -85,6 +83,15 @@
 		<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/util.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+		<script>
+setInterval(function() {
+    fetch('/event_count')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('eventCount').textContent = data.count;
+        });
+}, 10000);
+</script>
 
 
 	</body>
